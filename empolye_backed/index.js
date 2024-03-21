@@ -25,7 +25,7 @@ app.post('/addEmployee', async function (req, res) {
    
     let {pnumber,pname,buyingprice,bought,amountout,sellingprice,sold,stock,unitprofit,profit} = req.body;
     amountout = buyingprice *bought;
-    unitprofit = sellingprice *sold;
+    unitprofit = sellingprice -buyingprice ;
     stock = bought -sold;
     profit = amountout -unitprofit;
     try {
@@ -67,7 +67,7 @@ app.post('/addEmployee', async function (req, res) {
     console.log(req.body)
    
     try {
-     const result =await db.query("SELECT * FROM turnover ")
+     const result =await db.query("SELECT * FROM turnover WHERE id=$1 ",[req.body.id])
     //  console.log(result.rows[0])
      res.json(result.rows[0])
      
@@ -98,11 +98,9 @@ app.post('/addEmployee', async function (req, res) {
    })
 
    app.get('/turnOver', async function (req, res) {
- 
-  
-   
+
     try {
-     const result =await db.query("SELECT * FROM turnover")
+     const result = await db.query("SELECT * FROM turnover")
     //  console.log(result.rows[0])
      res.json(result.rows)
      
